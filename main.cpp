@@ -3,10 +3,20 @@
 #include "Libs.h"
 #include "Utility.h"
 
+
+
+
+double findMinimumBrent(double a, double b, double c) {
+	
+
+
+	return 0;
+}
+
 int main(int argc, char* argv[]) {
 
-	std::cout << "Hello world " << std::endl;
+	
 
-
+	_getch();
 	return 0;
 }

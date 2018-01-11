@@ -7,7 +7,6 @@ void Matrix::deallocate2DArray(double** _arr, unsigned rowsNum) { // Deallocatin
 	delete[] _arr;
 }
 
-
 //Constructors and destructor
 Matrix::Matrix(unsigned rowNum, unsigned colNum) : size(MatrixSize(rowNum,colNum)){
 	arr = new double*[size.getRowsNum()];
@@ -65,7 +64,7 @@ Matrix Matrix::getMultipliedByScalar(double scalar){
 }
 void Matrix::multiplyByMatrix(Matrix const& B) {
 	if (size.getColNum() != B.size.getRowsNum())
-		throw MatrixException("Unable to multiply matrices! Wrong dimensions!");
+		throw CustomException("Unable to multiply matrices! Wrong dimensions!");
 
 	double** tmpArr = arr;
 	unsigned prevColNum = size.getColNum();
@@ -86,7 +85,7 @@ void Matrix::multiplyByMatrix(Matrix const& B) {
 }
 Matrix Matrix::getMultipliedByMatrix(Matrix const &B) {
 	if (size.getColNum() != B.size.getRowsNum())
-		throw MatrixException("Unable to get multiplied matrices! Wrong dimensions!");
+		throw CustomException("Unable to get multiplied matrices! Wrong dimensions!");
 
 	Matrix rMatrix(size.getRowsNum(), B.size.getColNum());
 	for (unsigned i = 0; i < size.getRowsNum(); i++) //iterate A matrix through columns
@@ -133,7 +132,7 @@ Matrix Matrix::getTransposed() {
 }
 void Matrix::interchangeRows(unsigned r1, unsigned r2) {
 	if (r1 >= size.getRowsNum() || r2 >= size.getRowsNum()) 
-		throw MatrixException("Unable to interchangeRows!");
+		throw CustomException("Unable to interchangeRows!");
 		if (r1 == r2)
 			return;
 		for (unsigned i = 0; i < size.getColNum(); i++)
@@ -143,7 +142,7 @@ void Matrix::addRow(unsigned baseRow, unsigned addedRow, double multiplier) {
 	//because baseRow and addedRow are unsigned, that means if we put values that's less than zero
 	//in function it will be equals to max unsigned value 
 	if (baseRow >= size.getRowsNum() || addedRow >= size.getRowsNum()) 
-		throw MatrixException("Out of range! Unable to add row!");
+		throw CustomException("Out of range! Unable to add row!");
 	
 	for (unsigned i = 0; i < size.getColNum(); i++)
 		arr[baseRow][i] += arr[addedRow][i] * multiplier;
@@ -157,12 +156,12 @@ bool Matrix::isVector() const {
 }
 bool Matrix::isVerticalVector()  const{
 	if (!isVector())
-		throw MatrixException("Can't check if vector is vertical! Matrix isn't vector!");
+		throw CustomException("Can't check if vector is vertical! Matrix isn't vector!");
 	return (size.getRowsNum() == 1) ? false : true;
 }
 double Matrix::getVectorLength(){
 	if (!isVector())
-		throw MatrixException("Unable to get vector lenght! Matrix isn't matrix");
+		throw CustomException("Unable to get vector lenght! Matrix isn't matrix");
 
 	double sum=0;
 	if(size.getColNum() > 1){
@@ -176,19 +175,19 @@ double Matrix::getVectorLength(){
 }
 void Matrix::normalizeVector(){
 	if (!this->isVector())
-		throw MatrixException("Unnable to normalize vector! Matrix isn't vector");
+		throw CustomException("Unnable to normalize vector! Matrix isn't vector");
 	this->multiplyByScalar(1.f/getVectorLength());
 }
 Matrix Matrix::getNormalizedVector() {
 	if (!this->isVector())
-		throw MatrixException("Unnable to get normalized vector! Matrix isn't vector");
+		throw CustomException("Unnable to get normalized vector! Matrix isn't vector");
 	Matrix tmpMatrix(*this);
 	tmpMatrix.multiplyByScalar(1.f / getVectorLength());
 	return tmpMatrix;
 }
 double Matrix::getScalarProduct(const Matrix& matrix){
 	if (!matrix.isVector() || !this->isVector() || matrix.size != this->size)
-		throw MatrixException("Unable to get scalar product!");
+		throw CustomException("Unable to get scalar product!");
 	
 	double sum = 0;
 	if(size.getColNum() > 1)
@@ -202,7 +201,7 @@ double Matrix::getScalarProduct(const Matrix& matrix){
 }
 Matrix Matrix::findPerpendicularVector(){
 	if(!this->isVector())
-		throw MatrixException("Unable to find perpendicular vector! Matrix isn't vector!");
+		throw CustomException("Unable to find perpendicular vector! Matrix isn't vector!");
 	Matrix temp(this->size);
 	double sum = 0;
 	if(size.getColNum() > 1)
@@ -232,7 +231,7 @@ Matrix Matrix::findPerpendicularVector(){
 //Overloading operators
 double& Matrix::operator()(unsigned row, unsigned col) {
 	if (row >= size.getRowsNum() || col >= size.getColNum())
-		throw MatrixException("Out of range! Unable to get access to specific element!");
+		throw CustomException("Out of range! Unable to get access to specific element!");
 	return arr[row][col];
 }
 Matrix& Matrix::operator=(Matrix && B){
@@ -246,7 +245,7 @@ Matrix& Matrix::operator=(Matrix && B){
 }
 Matrix& Matrix::operator+=(const Matrix& matrix) {
 	if (this->size != matrix.size)
-		throw MatrixException("Can't use operator+= because of different dimensions!");
+		throw CustomException("Can't use operator+= because of different dimensions!");
 	
 	for (unsigned i = 0; i<size.getRowsNum(); i++)
 		for (unsigned j = 0; j<size.getColNum(); j++)
@@ -255,7 +254,7 @@ Matrix& Matrix::operator+=(const Matrix& matrix) {
 }
 Matrix& Matrix::operator-=(const Matrix& matrix){
 	if(this->size != matrix.size)
-		throw MatrixException("Can't use operator-= because of different dimensions!");
+		throw CustomException("Can't use operator-= because of different dimensions!");
 
 	for(unsigned i=0;i<size.getRowsNum();i++)
 		for(unsigned j=0;j<size.getColNum();j++)

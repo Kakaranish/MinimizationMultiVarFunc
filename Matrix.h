@@ -1,5 +1,6 @@
 #pragma once
 #include "Libs.h"
+#include "CustomException.h"
 #include <type_traits>
 #include <iomanip>
 #include <random>
@@ -26,16 +27,8 @@ public:
 	}
 
 };
-class MatrixException : public std::runtime_error {
-private:
-	std::string message;
-public:
-	MatrixException(std::string message) : message(message),std::runtime_error(message){}
-	const char* what() const override { return message.c_str(); }
-};
 
 class Matrix {
-
 protected:
 	double **arr;
 	MatrixSize size;
