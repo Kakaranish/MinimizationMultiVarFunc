@@ -66,9 +66,12 @@ public:
 
 	//Overloading operators
 	double& operator()(unsigned row, unsigned col); //Accessor to specific element of arr
+	Matrix& operator=(Matrix & B);
 	Matrix& operator=(Matrix && B);
 	Matrix& operator-=(const Matrix& matrix);
 	Matrix& operator+=(const Matrix& matrix);
+	Matrix operator+(const Matrix& matrix);
+	Matrix operator-(const Matrix& matrix);
 	friend std::ostream& operator<<(std::ostream& output, const Matrix& vec);
 	
 	

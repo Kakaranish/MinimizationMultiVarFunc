@@ -234,6 +234,19 @@ double& Matrix::operator()(unsigned row, unsigned col) {
 		throw CustomException("Out of range! Unable to get access to specific element!");
 	return arr[row][col];
 }
+Matrix& Matrix::operator=(Matrix & B) {
+	if (arr != nullptr) 
+		deallocate2DArray(arr, size.getRowsNum());
+
+	size = B.size;
+	arr = new double*[size.getRowsNum()];
+	for (int i = 0; i < size.getRowsNum(); i++) {
+		arr[i] = new double[size.getColNum()];
+		for (int j = 0; j < size.getColNum(); j++) 
+			arr[i][j] = B.arr[i][j];		
+	}
+	return *this;
+}
 Matrix& Matrix::operator=(Matrix && B){
 	deallocate2DArray(this->arr, size.getRowsNum());
 	this->size = std::move(B.size);
@@ -260,6 +273,26 @@ Matrix& Matrix::operator-=(const Matrix& matrix){
 		for(unsigned j=0;j<size.getColNum();j++)
 			arr[i][j] -= matrix.arr[i][j];
 	return *this;
+}
+Matrix Matrix::operator+(const Matrix& matrix) {
+	if (this->size != matrix.size)
+		throw CustomException("Can't use operator+ because of different dimensions!");
+
+	Matrix tMatrix(size);
+	for (unsigned i = 0; i<size.getRowsNum(); i++)
+		for (unsigned j = 0; j<size.getColNum(); j++)
+			tMatrix.arr[i][j] = (arr[i][j] + matrix.arr[i][j]);
+	return tMatrix;
+}
+Matrix Matrix::operator-(const Matrix& matrix) {
+	if (this->size != matrix.size)
+		throw CustomException("Can't use operator+ because of different dimensions!");
+
+	Matrix tMatrix(getSize());
+	for (unsigned i = 0; i<size.getRowsNum(); i++)
+		for (unsigned j = 0; j<size.getColNum(); j++)
+			tMatrix.arr[i][j] = (arr[i][j] - matrix.arr[i][j]);
+	return tMatrix;
 }
 std::ostream& operator<<(std::ostream& output, const Matrix& _m) {
 	for (unsigned i = 0; i < _m.size.getRowsNum(); i++) {
