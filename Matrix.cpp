@@ -234,6 +234,24 @@ double& Matrix::operator()(unsigned row, unsigned col) {
 		throw CustomException("Out of range! Unable to get access to specific element!");
 	return arr[row][col];
 }
+bool Matrix::operator==(const Matrix& matrix) {
+	if (size != matrix.size)
+		return false;
+	for (int i = 0; i < size.getRowsNum(); i++)
+		for (int j = 0; j < size.getColNum(); j++)
+			if (arr[i][j] != matrix.arr[i][j])
+				return false;
+	return true;
+}
+bool Matrix::operator!=(const Matrix& matrix) {
+	if (size != matrix.size)
+		return true;
+	for (int i = 0; i < size.getRowsNum(); i++)
+		for (int j = 0; j < size.getColNum(); j++)
+			if (arr[i][j] != matrix.arr[i][j])
+				return true;
+	return false;
+}
 Matrix& Matrix::operator=(Matrix & B) {
 	if (arr != nullptr) 
 		deallocate2DArray(arr, size.getRowsNum());

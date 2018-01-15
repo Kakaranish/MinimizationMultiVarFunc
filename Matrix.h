@@ -66,6 +66,8 @@ public:
 
 	//Overloading operators
 	double& operator()(unsigned row, unsigned col); //Accessor to specific element of arr
+	bool operator==(const Matrix& matrix);
+	bool operator!=(const Matrix& matrix);
 	Matrix& operator=(Matrix & B);
 	Matrix& operator=(Matrix && B);
 	Matrix& operator-=(const Matrix& matrix);
